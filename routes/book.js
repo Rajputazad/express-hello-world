@@ -11,7 +11,7 @@ module.exports = function (router) {
         userid: req.decoded.userid,
         title: req.body.title,
         author: req.body.author,
-        genre: req.body.gener,
+        genre: req.body.genre,
         description: req.body.description,
         bookurl:req.body.bookurl
       };
