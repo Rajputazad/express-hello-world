@@ -1,5 +1,7 @@
 const db = require("../db/book");
-const multer = require("multer")();
+const multer = require("multer")({
+  limits: { fieldSize: 2 * 1024 * 1024 }
+});
 const auth = require("../middleware/auth");
 const database = require("../db/login")
 
@@ -10,7 +12,7 @@ module.exports = function (router) {
       const data = {
         userid: req.decoded.userid,
         title: req.body.title,
-        author: req.body.author,
+        author: req.body.author,  
         genre: req.body.genre,
         description: req.body.description,
         bookurl:req.body.bookurl
