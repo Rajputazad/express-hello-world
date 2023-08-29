@@ -4,10 +4,10 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const db = require("../db/login");
 const multe = require("multer")();
 const auth = require("../middleware/auth");
-const Redis = require("ioredis");
-const redis = new Redis(
-  "rediss://red-cjhgavr6fquc73bpdf4g:HMEWicbfLH9qeOpEMo2sSdq5i1mBQibh@oregon-redis.render.com:6379"
-);
+// const Redis = require("ioredis");
+// const redis = new Redis(
+//   "rediss://red-cjhgavr6fquc73bpdf4g:HMEWicbfLH9qeOpEMo2sSdq5i1mBQibh@oregon-redis.render.com:6379"
+// );
 module.exports = function (router) {
   router.post("/register", multe.any(), async (req, res) => {
     try {
