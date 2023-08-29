@@ -229,6 +229,15 @@ router.delete('/favorite/:_id',auth, multer.any(), async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 })
+const ip = require('ip');
+
+router.get('/get-ip', (req, res) => {
+  const clientIp = ip.address();
+  res.json({ ip: clientIp });
+});
+
+
+
   return router;
 
 
