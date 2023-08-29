@@ -231,11 +231,11 @@ router.delete('/favorite/:_id',auth, multer.any(), async (req, res) => {
 })
 const ip = require('ip');
 
-router.use((req, res, next) => {
-  const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress||req.socket.remoteAddress;
-  console.log(`Client IP: ${clientIp}`);
-  next();
-});
+// router.use((req, res, next) => {
+//   const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress||req.socket.remoteAddress;
+//   console.log(`Client IP: ${clientIp}`);
+//   next();
+// });
 
 router.get('/get-ip', (req, res) => {
   const clientIps = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress;
