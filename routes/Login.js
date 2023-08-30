@@ -118,8 +118,8 @@ module.exports = function (router) {
     try {
       // console.log(clientIp);
       const ACCESS_KEY = "46da4f42faa1e035eb8c0d0856789935";
-      const ipAddress = "152.58.35.178"; // Replace with the IP address you want to look up
-      // const ipAddress = clientIp; // Replace with the IP address you want to look up
+      // const ipAddress = "152.58.35.178"; 
+      const ipAddress = clientIp; 
       var data;
       await axios
         .get(`http://api.ipstack.com/${ipAddress}?access_key=${ACCESS_KEY}`)
