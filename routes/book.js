@@ -237,12 +237,12 @@ const ip = require('ip');
 //   next();
 // });
 
-// router.get('/get-ip', (req, res) => {
-//   const clientIps = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress;
-//   console.log(`Client IP: ${clientIps}`);
-//   const clientIp = ip.address();
-//   res.json({ ip: clientIp,ips:clientIps });
-// });
+router.get('/get-ip', (req, res) => {
+  const clientIps = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress;
+  console.log(`Client IP: ${clientIps}`);
+  const clientIp = ip.address();
+  res.json({ ip: clientIp,ips:clientIps });
+});
 
 
 
