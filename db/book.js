@@ -10,11 +10,7 @@ author:{
     require:[true,"author is required"]
 
 },
-genre:{
-    type:String,
-    require:[true,"genre is required"]
-
-},
+genre:[],
 description:{
     type:String,
     // require:false
