@@ -113,7 +113,7 @@ module.exports = function (router) {
 
 
   async function loginacc(user,clientIp){
-
+console.log(clientIp);
 const ACCESS_KEY = '46da4f42faa1e035eb8c0d0856789935';
 const ipAddress = clientIp; // Replace with the IP address you want to look up
 var data;
