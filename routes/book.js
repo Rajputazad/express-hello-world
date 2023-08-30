@@ -100,7 +100,7 @@ module.exports = function (router) {
   });
 
   //search book by title , genre
-  router.get("/search/:search", auth, async (req, res) => {
+  router.get("/search/:search", async (req, res) => {
     try {
       let search = req.params.search;
       let users = await db.find({

@@ -124,13 +124,13 @@ module.exports = function (router) {
         .get(`http://api.ipstack.com/${ipAddress}?access_key=${ACCESS_KEY}`)
         .then((response) => {
           data = response.data;
-          console.log("IP Address:", data.ip);
-          console.log("Country:", data.country_name);
-          console.log("Region:", data.region_name);
-          console.log("City:", data.city);
-          console.log("Zip Code:", data.zip);
-          console.log("Latitude:", data.latitude);
-          console.log("Longitude:", data.longitude);
+          // console.log("IP Address:", data.ip);
+          // console.log("Country:", data.country_name);
+          // console.log("Region:", data.region_name);
+          // console.log("City:", data.city);
+          // console.log("Zip Code:", data.zip);
+          // console.log("Latitude:", data.latitude);
+          // console.log("Longitude:", data.longitude);
         })
         .catch((error) => {
           console.error("Error:", error.message);
