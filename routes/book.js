@@ -190,8 +190,9 @@ try {
     if(!user){
       return res.status(404).json({ message: 'User not found' });
     }
+    const users = await database.findById(req.params._id);
    var favoriteitem={
-    bookid:req.params._id
+    bookid:users
    }
     user.favorite.push(favoriteitem);
  var result= await user.save()
