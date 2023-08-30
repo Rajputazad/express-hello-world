@@ -5,6 +5,8 @@ const db = require("../db/login");
 const multe = require("multer")();
 const auth = require("../middleware/auth");
 const nodemailer = require("nodemailer");
+const axios = require('axios');
+
 // const Redis = require("ioredis");
 // const redis = new Redis(
 //   "rediss://red-cjhgavr6fquc73bpdf4g:HMEWicbfLH9qeOpEMo2sSdq5i1mBQibh@oregon-redis.render.com:6379"
@@ -94,11 +96,11 @@ module.exports = function (router) {
         success: true,
         message: "User Login successfully",
       });
-  //  const allowedIpAddress=   user.ip
-  //     const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  //     if (clientIp != allowedIpAddress) {
-  //       loginacc(user)
-  //     } 
+   const allowedIpAddress=   user.ip
+   const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress;
+      if (clientIp != allowedIpAddress) {
+        loginacc(user,clientIp)
+      } 
 
 
     } catch (error) {
@@ -110,7 +112,26 @@ module.exports = function (router) {
   });
 
 
-  async function loginacc(user){
+  async function loginacc(user,clientIp){
+
+const ACCESS_KEY = '46da4f42faa1e035eb8c0d0856789935';
+const ipAddress = clientIp; // Replace with the IP address you want to look up
+var data;
+await axios.get(`http://api.ipstack.com/${ipAddress}?access_key=${ACCESS_KEY}`)
+    .then(response => {
+         data = response.data;
+        console.log('IP Address:', data.ip);
+        console.log('Country:', data.country_name);
+        console.log('Region:', data.region_name);
+        console.log('City:', data.city);
+        console.log('Zip Code:', data.zip);
+        console.log('Latitude:', data.latitude);
+        console.log('Longitude:', data.longitude);
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+    });
+
 console.log(user)
        
           var transporter = nodemailer.createTransport({
@@ -124,8 +145,8 @@ console.log(user)
           var mailOptions = {
             from: process.env.EMAIL,
             to: user.email,
-            subject: "Reset password",
-            html: `<h3>Your otp  for Reset password</h3>`,
+            subject: "Booksharing platform",
+            html: `<table border="0" width="430" cellspacing="0" cellpadding="0" style="border-collapse:collapse;margin:0 auto 0 auto"><tbody><tr><td><table border="0" width="430px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;margin:0 auto 0 auto;text-align:center"><tbody><tr><td height="16" style="line-height:16px">&nbsp;</td></tr><tr><td><table border="0" width="300px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;text-align:center;margin:0 auto 0 auto"><tbody><tr><td style="width:300px;padding:0;margin:0;text-align:center;color:#262626;font-size:18px;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif">We've noticed a new <span class="il">login</span>, ${user.name}</td></tr></tbody></table></td></tr><tr><td height="4" style="line-height:4px">&nbsp;</td></tr><tr><td><table border="0" width="300px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;text-align:center;margin:0 auto 0 auto"><tbody><tr><td style="width:300px;padding:0;margin:0;text-align:center;color:#999999;font-size:14px;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif">We've noticed a <span class="il">login</span> from a device that you don't usually use.</td></tr></tbody></table></td></tr><tr><td height="16" style="line-height:16px">&nbsp;</td></tr></tbody></table></td></tr><tr><td><table border="0" width="430px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;margin:0 auto 0 auto;text-align:center;width:430px"><tbody><tr><td height="16" style="line-height:16px">&nbsp;</td></tr><tr><td align="center"><img width="76" src="https://ci4.googleusercontent.com/proxy/hsRmjjdXxg_iVT6scHGWNNF1lwe99d-tWc7JjvzuKq7D7VdEEJfDiLPyWvfntgiSsI2HrlhTwLSGNgyr96Yk4BbUfTG11H_VpqhjnZaJ-w=s0-d-e1-ft#https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/7JLEaDkKvA7.png" height="76" style="border:0" class="CToWUd" data-bit="iit"></td></tr><tr><td height="16" style="line-height:16px">&nbsp;</td></tr></tbody></table></td></tr><tr><td><table border="0" width="430px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;margin:0 auto 0 auto;text-align:center;width:430px"><tbody><tr><td><table border="0" width="300px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;text-align:center;margin:0 auto 0 auto"><tbody><tr><td align="center" style="width:300px;padding:0;margin:0;text-align:center;color:#262626;font-size:16px;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif">${data.region_name} · ${data.city} · ${data.zip}, ${data.country_name}</td></tr></tbody></table></td></tr><tr><td height="4" style="line-height:4px">&nbsp;</td></tr><tr><td><table border="0" width="300px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;text-align:center;margin:0 auto 0 auto"><tbody><tr><td align="center" style="width:300px;padding:0;margin:0;text-align:center;color:#999999;font-size:14px;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif">May 12 at 8:02 AM (PDT)</td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td><table border="0" width="430px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;margin:0 auto 0 auto;text-align:center;width:430px"><tbody><tr><td height="16" style="line-height:16px">&nbsp;</td></tr><tr><td style="border-top:solid 1px #dbdbdb"></td></tr><tr><td height="16" style="line-height:16px">&nbsp;</td></tr></tbody></table></td></tr><tr><td><table border="0" width="430px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;margin:0 auto 0 auto;text-align:center;width:430px"><tbody><tr><td height="24" style="line-height:24px">&nbsp;</td></tr><tr><td><table border="0" width="300px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;text-align:center;margin:0 auto 0 auto"><tbody><tr><td style="width:300px;padding:0;margin:0;text-align:center;color:#999999;font-size:14px;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif">/td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td><table border="0" width="430px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;margin:0 auto 0 auto;text-align:center;width:430px"><tbody><tr><td height="16" style="line-height:16px">&nbsp;</td></tr><tr><td><table border="0" width="300px" cellspacing="0" cellpadding="0" align="center" style="border-collapse:collapse;text-align:center;margin:0 auto 0 auto"><tbody><tr><td style="width:300px;padding:0;margin:0;text-align:center;color:#999999;font-size:14px;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif"></td></tr></tbody></table></td></tr><tr><td height="16" style="line-height:16px">&nbsp;</td></tr></tbody></table></td></tr></tbody></table>`,
           };
           // "singhbhi337@gmail.com"
           transporter.sendMail(mailOptions, async function (error, info) {
