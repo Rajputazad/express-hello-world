@@ -4,6 +4,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const db = require("../db/login");
 const multe = require("multer")();
 const auth = require("../middleware/auth");
+const nodemailer = require("nodemailer");
 // const Redis = require("ioredis");
 // const redis = new Redis(
 //   "rediss://red-cjhgavr6fquc73bpdf4g:HMEWicbfLH9qeOpEMo2sSdq5i1mBQibh@oregon-redis.render.com:6379"
@@ -86,13 +87,20 @@ module.exports = function (router) {
 
       user.token[0] = token;
       await user.save();
-      const userdatas = await db.findOne(user._id).select("-password -token");
+      const userdatas = await db.findOne(user._id).select("-password -token -ip");
       res.status(200).json({
         token: token,
         data: userdatas,
         success: true,
         message: "User Login successfully",
       });
+  //  const allowedIpAddress=   user.ip
+  //     const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  //     if (clientIp != allowedIpAddress) {
+  //       loginacc(user)
+  //     } 
+
+
     } catch (error) {
       console.error(error);
       res
@@ -100,6 +108,39 @@ module.exports = function (router) {
         .json({ success: false, message: "Internal server error" });
     }
   });
+
+
+  async function loginacc(user){
+console.log(user)
+       
+          var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD,
+            },
+          });
+
+          var mailOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: "Reset password",
+            html: `<h3>Your otp  for Reset password</h3>`,
+          };
+          // "singhbhi337@gmail.com"
+          transporter.sendMail(mailOptions, async function (error, info) {
+            if (error) {
+              console.log(error);
+              res.send(error);
+            } else {
+           
+              console.log("Email sent: " + info.response);
+              // res.status(200).json("Email sent: " + info.response);
+              // res.status(200).json("Otp send successfully");
+            }
+          });
+}
+
 
   //auth of user
   router.get("/home", auth, async (req, res) => {

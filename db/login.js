@@ -36,7 +36,8 @@ const loginSchema = mongoose.Schema({
     default: 1,
   },
   inbox: [{ bookid: String, userid: String,message:String }],
-  favorite:[{bookid:String}]
+  favorite:[{bookid:String}],
+  ip:[]
 });
 
 module.exports = mongoose.model("Login_Details", loginSchema);
