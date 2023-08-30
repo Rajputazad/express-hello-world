@@ -190,11 +190,12 @@ try {
     if(!user){
       return res.status(404).json({ message: 'User not found' });
     }
-    const users = await database.findById(req.params._id);
+    const users = await db.findById(req.params._id);
+
    var favoriteitem={
     bookid:users
    }
-    user.favorite.push(favoriteitem);
+    user.favorite.push(favoriteitem); 
  var result= await user.save()
   res.status(200).json({ success: true, data: result, message: 'book add successfully' });
 } catch (error) {
