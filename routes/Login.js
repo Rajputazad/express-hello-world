@@ -99,7 +99,7 @@ module.exports = function (router) {
         message: "User Login successfully",
       });
       const allowedIpAddress = user.ip;
-      const clientIp =
+      const clientIp = await
         req.headers["x-forwarded-for"] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress;
