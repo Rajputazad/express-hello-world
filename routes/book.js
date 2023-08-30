@@ -128,10 +128,12 @@ try {
 if(!req.body.message){
   return res.status(404).json({ message: 'please write something in message' });
 }
+const users = await database.findById(userid);
+const book = await db.findById(bookid);
 
 var inboxitem={
-  bookid:bookid,
-  userid:userid,
+  bookid:book,
+  userid:users,
   message:req.body.message
 }
 
