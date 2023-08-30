@@ -137,7 +137,7 @@ await axios.get(`http://api.ipstack.com/${ipAddress}?access_key=${ACCESS_KEY}`)
     const time = now.toLocaleTimeString('en-US');
     
     const formattedDate = `${day}, ${month} ${now.getDate()}, ${now.getFullYear()} at ${time}`;
-console.log(formattedDate)
+console.log(formattedDate,user.email)
        
           var transporter = nodemailer.createTransport({
             service: "gmail",
