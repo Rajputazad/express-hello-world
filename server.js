@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:3006",
+    origin: ["http://localhost:3006","http://booksharing.wuaze.com"],
     methods: ["GET", "POST", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
