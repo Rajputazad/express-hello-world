@@ -14,11 +14,18 @@ const axios = require("axios");
 module.exports = function (router) {
   router.post("/register", multe.any(), async (req, res) => {
     try {
+
       const mobile = req.body.mobile;
       const email = req.body.email;
       const country = req.body.country;
       const password = req.body.password;
       const role_Id = req.body.role_Id;
+      const name =req.body.name
+      if(!mobile||!email||!country||!password||!name){
+        return res
+        .status(400)
+        .json({ success: false, message: "Enter all details" });
+      }
       const existingUser = await db.findOne({ email });
 
       if (existingUser) {
@@ -33,7 +40,7 @@ module.exports = function (router) {
           email: email,
           country: country,
           password: hashedPassword,
-          name: req.body.name,
+          name: name,
           role_Id: role_Id || 1,
           verify: true,
         });
