@@ -198,11 +198,28 @@ try {
    var favoriteitem={
     bookadd:users
    }
+   var add=true
   //  console.log(user.favorite[1]._id.toString());
-  
-    user.favorite.push(favoriteitem); 
- var result= await user.save();
-  res.status(200).json({ success: true,data :result,  message: 'book add successfully' });
+  var result;
+  for(i=0;i<user.favorite.length;i++){
+    if(user.favorite[i].bookadd._id==req.params._id){
+      // console.log(user.favorite[i].bookadd._id==req.params._id);
+      // console.log(user.favorite[i]._id);
+     await user.favorite.pull({ _id: user.favorite[i]._id.toString()});
+       result= await user.save();
+      add=false
+    }else{
+      add=true
+    }
+  }if(add){
+        user.favorite.push(favoriteitem); 
+      result= await user.save();
+   return  res.status(200).json({ success: true,data :result,  message: 'book added' });
+   
+  }else{
+    return  res.status(200).json({ success: true,data :result,  message: 'book removed' });
+    
+  }
 } catch (error) {
   console.log(error);
   res.status(500).json({ success: false, message: 'Internal server error' });
@@ -215,9 +232,9 @@ try {
 router.delete('/favorite/:_id',auth, multer.any(), async (req, res) => {
   try {
     const  userid  = req.decoded.userid;
-    console.log(userid)
+    // console.log(userid)
     const { _id } = req.params;
-    console.log(_id)
+    // console.log(_id)
 
     const user = await database.findById(userid);
     if (!user) {
