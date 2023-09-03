@@ -132,8 +132,9 @@ const users = await database.findById(userid);
 const book = await db.findById(bookid);
 
 var inboxitem={
-  bookid:book,
-  userid:users,
+  booktitle:book.title,
+  username:users.name,
+  email:users.email,
   message:req.body.message
 }
 
@@ -164,7 +165,7 @@ var inboxitem={
       const  bookownerid  = req.decoded.userid;
       console.log(bookownerid)
       const { _id } = req.params;
-      console.log(_id)
+      // console.log(_id)
   
       const user = await database.findById(bookownerid);
       if (!user) {
@@ -195,11 +196,13 @@ try {
     const users = await db.findById(req.params._id);
 
    var favoriteitem={
-    bookid:users
+    bookadd:users
    }
+  //  console.log(user.favorite[1]._id.toString());
+  
     user.favorite.push(favoriteitem); 
- var result= await user.save()
-  res.status(200).json({ success: true, data: result, message: 'book add successfully' });
+ var result= await user.save();
+  res.status(200).json({ success: true,data :result,  message: 'book add successfully' });
 } catch (error) {
   console.log(error);
   res.status(500).json({ success: false, message: 'Internal server error' });
