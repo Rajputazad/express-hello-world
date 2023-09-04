@@ -35,7 +35,7 @@ const loginSchema = mongoose.Schema({
     type: Number,
     default: 1,
   },
-  inbox: [{ booktitle: String, username: String,message:String ,email:String}],
+  inbox: [{ booktitle: String, username: String,message:String ,email:String,mobile:String}],
   favorite:[{bookadd:mongoose.Schema.Types.Mixed}],
   ip:[]
 });

@@ -4,7 +4,7 @@ const multer = require("multer")({
 });
 const auth = require("../middleware/auth");
 const database = require("../db/login")
-
+const nodemailer = require("nodemailer");
 module.exports = function (router) {
   //books uploud book image api is panding
   router.post("/bookinfo", multer.any(), auth, async (req, res) => {
@@ -120,7 +120,7 @@ module.exports = function (router) {
   
   router.post("/inbox",auth,multer.any(),async(req,res)=>{
 var userid=req.decoded.userid
-console.log(userid);
+// console.log(userid);
 var bookid=req.body.bookid
 var bookownerid=req.body.bookownerid
 try {
@@ -131,17 +131,19 @@ if(!req.body.message){
 const users = await database.findById(userid);
 const book = await db.findById(bookid);
 
+const user = await database.findById(bookownerid);
+console.log(user);
+if (!user) {
+  return res.status(404).json({ message: 'User not found' });
+}
 var inboxitem={
   booktitle:book.title,
   username:users.name,
   email:users.email,
+  mobile:user.mobile,
   message:req.body.message
 }
 
-  const user = await database.findById(bookownerid);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
 
   // if (user.inbox.some(item => JSON.stringify(item) === JSON.stringify(inboxitem))) {
   //   return res.status(400).json({ message: 'your message already sent' });
@@ -159,6 +161,48 @@ var inboxitem={
 }
   })
 
+
+  router.post("/request/:itemId",multer.any(),auth,async(req,res)=>{
+    try {
+      var userid=req.decoded.userid
+      const user = await database.findById(userid);
+      const itemId = req.params.itemId;
+      const inboxMessage = user.inbox.find(message => message._id.toString() === itemId);
+  
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+        },
+      });
+  
+      var mailOptions = {
+        from: process.env.EMAIL,
+        to: inboxMessage.email,
+        subject: "Booksharing platform",
+        html:`<h1>Hi ${inboxMessage.username} Your request is accepted for book ${inboxMessage.booktitle} </h1> <br> <h3>Now you can contact book owner with mobile:- ${inboxMessage.mobile}</h3> <br>`
+      };
+      // "singhbhi337@gmail.com"
+      transporter.sendMail(mailOptions, async function (error, info) {
+        if (error) {
+          console.log(error);
+          // res.send(error);
+          res.status(500).json({ success: false, message: 'Email not sent' });
+  
+        } else {
+          console.log("Email sent: " + info.response);
+          res.status(200).json({ success: true, data: info.response, message: 'Email sent' });
+          // res.status(200).json("Email sent: " + info.response);
+          // res.status(200).json("Otp send successfully");
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Internal server error' });
+
+    }
+
+  })
 
   router.delete('/inbox/:_id',auth, multer.any(), async (req, res) => {
     try {
@@ -267,6 +311,11 @@ router.get('/get-ip', (req, res) => {
   const clientIp = ip.address();
   res.json({ ip: clientIp,ips:clientIps });
 });
+
+
+
+
+
 
 
 
