@@ -252,6 +252,7 @@ try {
      await user.favorite.pull({ _id: user.favorite[i]._id.toString()});
        result= await user.save();
       add=false
+      break;  
     }else{
       add=true
     }
