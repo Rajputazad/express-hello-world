@@ -30,7 +30,7 @@ module.exports = function (router) {
   });
 
   //books on home page
-  router.get("/booksget-api", async (req, res) => {
+  router.get("/booksget", async (req, res) => {
     try {
       const data = await db.find();
       res.status(200).json({ success: true, data: data });
