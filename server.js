@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["http://localhost:3006","https://653e6432779d1a78ee281d4e--spiffy-figolla-e84639.netlify.app"],
+    origin: ["http://localhost:3006","https://653e91eb7e10801e35a98826--idyllic-fox-97ca75.netlify.app"],
     methods: ["GET", "POST", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
